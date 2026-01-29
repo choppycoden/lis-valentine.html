@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Valentine's Day Lis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Poppins',sans-serif;background:#7a1f1f;overflow-x:hidden}
+.page{display:none;min-height:100vh;text-align:center;padding:20px}
+.page.active{display:block}
+h1{font-family:'Playfair Display',serif;color:#5a0f0f}
+button{padding:12px 24px;border:none;border-radius:25px;background:#b22222;color:white;font-size:16px;cursor:pointer;margin:20px}
+.envelope{width:240px;height:150px;background:#b22222;margin:120px auto 20px;border-radius:10px;position:relative;animation:bounce 2s infinite}
+.envelope:before{content:'';position:absolute;top:0;left:0;width:0;height:0;border-left:120px solid transparent;border-right:120px solid transparent;border-top:75px solid #9e1b1b}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.letter{background:#fff3f3;border-radius:18px;padding:25px;max-width:520px;margin:30px auto;color:#6b1a1a;font-size:15px;line-height:1.7}
+.gift-wrap{margin-top:120px}
+.gift-box{width:220px;height:160px;background:#b22222;margin:0 auto;position:relative;border-radius:12px;cursor:pointer}
+.ribbon-v{position:absolute;left:50%;top:0;width:24px;height:100%;background:#ffd6d6;transform:translateX(-50%)}
+.ribbon-h{position:absolute;top:50%;left:0;width:100%;height:24px;background:#ffd6d6;transform:translateY(-50%)}
+.bow{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:28px}
+.click-hint{margin-top:12px;color:#fff;font-size:14px;opacity:0.9}
+.chocolates{font-size:48px;margin-top:25px;display:none}
+.float{position:fixed;top:-10%;font-size:22px;animation:fall 6s linear infinite}
+@keyframes fall{from{transform:translateY(0);opacity:1}to{transform:translateY(110vh);opacity:0}}
+</style>
+</head>
+<body>
+
+<div class="page active" id="p1">
+  <div class="envelope"></div>
+  <button onclick="openLetter()">Open Envelope 💌</button>
+</div>
+
+<div class="page" id="p2">
+  <div class="letter">
+    <h1>Happy Valentine's Day Lis!</h1>
+    <p>
+    Thank you for always being such a sweet friend to me and always being here for me.
+    U do so much for me Lis and I couldn't have ask for a better friend.
+    Sorry for making u listen to my rants and for it sometimes being over the same thing,
+    but u bring me lots of comfort. You are a safe space for me so thank you for that.
+    I hope we can continue to make more memories together. Love u lots Lis 🥺❤️
+    </p>
+  </div>
+  <button onclick="goNext()">Next ➜</button>
+</div>
+
+<div class="page" id="p3">
+  <h1>Surprise!!!</h1>
+  <div class="gift-wrap">
+    <div class="gift-box" onclick="openBox()">
+      <div class="ribbon-v"></div>
+      <div class="ribbon-h"></div>
+      <div class="bow">🎀</div>
+    </div>
+    <div class="click-hint">Tap the gift 🎁</div>
+  </div>
+  <div class="chocolates" id="chocs">🍫🍫🍫🍫</div>
+  <button onclick="replay()">Replay 💞</button>
+</div>
+
+<script>
+function openLetter(){p1.classList.remove('active');p2.classList.add('active')}
+function goNext(){p2.classList.remove('active');p3.classList.add('active');startFloating()}
+function openBox(){document.getElementById('chocs').style.display='block'}
+function replay(){location.reload()}
+function startFloating(){setInterval(()=>{let f=document.createElement('div');f.className='float';f.textContent=Math.random()>0.5?'❤️':'🍫';f.style.left=Math.random()*100+'vw';document.body.appendChild(f);setTimeout(()=>f.remove(),6000)},500)}
+</script>
+
+</body>
+</html>
