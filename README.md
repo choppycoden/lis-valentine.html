@@ -1,1 +1,304 @@
 # lis-valentine.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine’s Gift for Lis</title>
+<style>
+/* GENERAL */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #7a1f1f, #b23a3a);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hidden { display: none; }
+
+/* ENVELOPE PAGE */
+.envelope-container {
+  text-align: center;
+  cursor: pointer;
+}
+
+.envelope {
+  position: relative;
+  width: 280px;
+  height: 180px;
+  border-radius: 6px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.flap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #a83232;
+  clip-path: polygon(0 0, 50% 60%, 100% 0);
+  transform-origin: top;
+  transition: transform 0.8s ease;
+  z-index: 3;
+}
+
+.envelope-base {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #b23a3a;
+  z-index: 1;
+}
+
+.letter {
+  position: absolute;
+  bottom: -100%;
+  left: 10px;
+  width: 260px;
+  height: 360px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px;
+  box-sizing: border-box;
+  transition: bottom 1s ease;
+  z-index: 2;
+  overflow-y: auto;
+  visibility: hidden;
+}
+
+.open .flap { transform: rotateX(180deg); }
+.open .letter { bottom: 15px; visibility: visible; }
+
+.tap { color: #fff; margin-top: 15px; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%{opacity:.4;}50%{opacity:1;}100%{opacity:.4;} }
+
+.letter h2 { text-align: center; color: #a83232; }
+.letter p { font-size: 14px; line-height: 1.6; color: #333; }
+.next-btn {
+  margin-top: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  background: #fff;
+  color: #a83232;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* SURPRISE PAGE */
+.surprise-page {
+  text-align: center;
+  color: #fff;
+  position: relative;
+}
+
+.choco-rain {
+  position: fixed;
+  top: -10%;
+  left: 0;
+  width: 100%;
+  height: 120%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.choco-rain span {
+  position: absolute;
+  font-size: 22px;
+  animation: fall 6s linear infinite;
+}
+
+.choco-rain span:nth-child(1) { left: 10%; animation-delay: 0s; }
+.choco-rain span:nth-child(2) { left: 25%; animation-delay: 1s; }
+.choco-rain span:nth-child(3) { left: 40%; animation-delay: 2s; }
+.choco-rain span:nth-child(4) { left: 55%; animation-delay: 3s; }
+.choco-rain span:nth-child(5) { left: 70%; animation-delay: 4s; }
+.choco-rain span:nth-child(6) { left: 85%; animation-delay: 5s; }
+
+@keyframes fall { 0%{transform:translateY(-10%);}100%{transform:translateY(110vh);} }
+
+.chocolate-box {
+  width: 180px;
+  height: 120px;
+  background: #b23a3a;
+  margin: 30px auto;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  animation: wiggle 2s infinite;
+  z-index: 1;
+}
+
+@keyframes wiggle {0%,100%{transform:rotate(0deg);}50%{transform:rotate(2deg);}}
+
+.lid {
+  position: absolute;
+  width: 180px;
+  height: 40px;
+  background: #a83232;
+  top: -30px;
+  border-radius: 12px 12px 0 0;
+  transform-origin: bottom center;
+  transition: transform 0.8s ease;
+}
+
+.lid.open { transform: rotateX(-60deg); }
+
+.chocolates span {
+  font-size: 26px;
+}
+.chocolates.hidden { display: none; }
+
+/* Ribbon */
+.ribbon-horizontal, .ribbon-vertical {
+  position: absolute;
+  background: #ffcc00; /* gold ribbon */
+}
+
+.ribbon-horizontal { width: 100%; height: 12px; top: 50%; left: 0; transform: translateY(-50%); }
+.ribbon-vertical { width: 12px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+
+/* Bow */
+.bow {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  background: #ffcc00;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 4px;
+}
+.bow::after {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  background: #ffcc00;
+  border-radius: 4px;
+  transform: rotate(-90deg);
+  top: 0;
+  left: 0;
+}
+
+/* Glow effect */
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220px;
+  height: 160px;
+  background: radial-gradient(rgba(255,255,255,0.3), transparent 70%);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 0;
+}
+
+#choco-text.hidden { display: none; }
+
+.back-btn {
+  margin-top: 20px;
+  padding: 10px 18px;
+  font-size: 14px;
+  background: #fff;
+  color: #a83232;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- ENVELOPE PAGE -->
+<div class="envelope-container" id="envelope-page">
+  <div class="envelope">
+    <div class="flap"></div>
+    <div class="envelope-base"></div>
+
+    <div class="letter">
+      <h2>Happy Valentine’s Day Lis! ❤️</h2>
+      <p>Thank you for always being such a sweet friend to me and always being here for me. U do so much for me Lis and I couldn’t have asked for a better friend.</p>
+      <p>Sorry for making u listen to my rants and for it sometimes being over the same thing, but u bring me lots of comfort. You are a safe space for me so thank you for that!</p>
+      <p>I hope we can continue to make more memories together. Love u lots Lis 🥺❤️</p>
+      <button class="next-btn" onclick="goToSurprise()">Next ➡️</button>
+    </div>
+  </div>
+  <div class="tap">Tap to open 💌</div>
+</div>
+
+<!-- SURPRISE PAGE -->
+<div class="surprise-page hidden" id="surprise-page">
+  <div class="choco-rain">
+    <span>🍫</span><span>🍬</span><span>🍫</span>
+    <span>🍬</span><span>🍫</span><span>🍬</span>
+  </div>
+
+  <h1>Surprise!!! 🎉</h1>
+
+  <div class="chocolate-box" id="choco-box" onclick="openBox()">
+    <div class="lid"></div>
+    <div class="ribbon-horizontal"></div>
+    <div class="ribbon-vertical"></div>
+    <div class="bow"></div>
+    <div class="chocolates hidden">
+      <span>🍫</span>
+      <span>🍬</span>
+      <span>🍫</span>
+    </div>
+    <div class="glow" id="glow"></div>
+  </div>
+
+  <p id="choco-text" class="hidden">Here’s your Valentine’s chocolates! 🍫💝</p>
+  <button class="back-btn" onclick="backToLetter()">Back to letter 💌</button>
+</div>
+
+<script>
+let opened = false;
+
+const envelopePage = document.getElementById('envelope-page');
+const surprisePage = document.getElementById('surprise-page');
+const chocoBox = document.getElementById('choco-box');
+const chocolates = chocoBox.querySelector('.chocolates');
+const chocoText = document.getElementById('choco-text');
+const glow = document.getElementById('glow');
+
+envelopePage.addEventListener('click', () => {
+  if (!opened) {
+    envelopePage.classList.add('open');
+    opened = true;
+  }
+});
+
+function goToSurprise() {
+  envelopePage.classList.add('hidden');
+  surprisePage.classList.remove('hidden');
+}
+
+function openBox() {
+  chocoBox.querySelector('.lid').classList.add('open');
+  chocolates.classList.remove('hidden');
+  chocoText.classList.remove('hidden');
+  glow.style.opacity = "1"; // make glow appear
+}
+
+function backToLetter() {
+  surprisePage.classList.add('hidden');
+  envelopePage.classList.remove('hidden');
+  chocoBox.querySelector('.lid').classList.remove('open');
+  chocolates.classList.add('hidden');
+  chocoText.classList.add('hidden');
+  glow.style.opacity = "0";
+}
+</script>
+
+</body>
+</html>
